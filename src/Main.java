@@ -21,10 +21,17 @@ public class Main {
 
         //Query
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT table_name FROM user_tables");
+
+
+        String query = new Scanner(new File("test.sql")).useDelimiter(";").next();
+
+
+        ResultSet rs = stmt.executeQuery(query);
         while (rs.next()) {
             System.out.println(rs.getString(1));
         }
+
+        Admin.create_table();
 
         //close
         rs.close();
