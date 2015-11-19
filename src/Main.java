@@ -26,6 +26,7 @@ public class Main {
             System.out.println(rs.getString(1));
         }
 
+        System.out.println("hihihi");
         //close
         rs.close();
         stmt.close();
