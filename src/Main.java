@@ -15,6 +15,8 @@ public class Main {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
 
+        Administrator.menu(); //debugging
+
         //Query
         PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM fuser ORDER BY userid");
         pstmt.setString(1,"%Terence%");
