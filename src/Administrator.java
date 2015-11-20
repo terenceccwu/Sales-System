@@ -10,39 +10,39 @@ public class Administrator {
 
     public static void create_table() throws Exception{
 
-        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
-        Statement stmt = conn.createStatement();
+        Statement stmt = Main.conn.createStatement();
 
         stmt.executeUpdate("CREATE TABLE category(" +
-                "cID INTEGER(1) PRIMARY KEY," +
-                "cName VARCHAR2(20));");
+                "cID NUMBER(1)," +
+                "cName VARCHAR2(20)," +
+                "PRIMARY KEY(cID))");
 
         stmt.executeUpdate("CREATE TABLE manufacturer(" +
-                "mID INTEGER(2) PRIMARY KEY," +
+                "mID NUMBER(2) PRIMARY KEY," +
                 "mName VARCHAR2(20)," +
                 "mAddress VARCHAR2(50)," +
-                "mPhoneNumber(8)," +
-                "mWarrantyPeriod(1));");
+                "mPhoneNumber NUMBER(8)," +
+                "mWarrantyPeriod NUMBER(1))");
 
         stmt.executeUpdate("CREATE TABLE part(" +
-                "pID INTEGER(3) PRIMARY KEY," +
+                "pID NUMBER(3) PRIMARY KEY," +
                 "pName VARCHAR2(20)," +
-                "pPrice INTEGER(5)," +
-                "mID INTEGER(2) FOREIGN KEY REFERENCES manufacturer(mID)," +
-                "cID INTEGER(1) FOREIGN KEY REFERENCES category(cID)," +
-                "pAvailableQuantity INTEGER(2));");
+                "pPrice NUMBER(5)," +
+                "mID NUMBER(2) REFERENCES manufacturer(mID)," +
+                "cID NUMBER(1) REFERENCES category(cID)," +
+                "pAvailableQuantity NUMBER(2))");
 
         stmt.executeUpdate("CREATE TABLE salesperson(" +
-                "sID INTEGER(2) PRIMARY KEY," +
+                "sID NUMBER(2) PRIMARY KEY," +
                 "sName VARCHAR2(20)," +
                 "sAddress VARCHAR2(50)," +
-                "sPhoneNumber INTEGER(8));");
+                "sPhoneNumber NUMBER(8))");
 
         stmt.executeUpdate("CREATE TABLE transaction(" +
-                "tID INTEGER(4) PRIMARY KEY," +
-                "pID INTEGER(3) FOREIGN KEY REFERENCES part(pID)," +
-                "sID INTEGER(2) FOREIGN KEY REFERENCES salesperson(sID)," +
-                "tDate DATE NOT NULL);");
+                "tID NUMBER(4) PRIMARY KEY," +
+                "pID NUMBER(3) REFERENCES part(pID)," +
+                "sID NUMBER(2) REFERENCES salesperson(sID)," +
+                "tDate DATE NOT NULL)");
 
         stmt.close();
 
@@ -53,11 +53,11 @@ public class Administrator {
         Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
         Statement stmt = conn.createStatement();
 
+        stmt.executeUpdate("DROP TABLE transaction");
+        stmt.executeUpdate("DROP TABLE part");
         stmt.executeUpdate("DROP TABLE category");
         stmt.executeUpdate("DROP TABLE manufacturer");
-        stmt.executeUpdate("DROP TABLE part");
         stmt.executeUpdate("DROP TABLE salesperson");
-        stmt.executeUpdate("DROP TABLE transaction");
 
         stmt.close();
 
