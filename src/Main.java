@@ -8,35 +8,26 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String args[]) throws Exception {
-        //get DB login credentials
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter DB username: ");
-        String username = scanner.next();
-        System.out.print("Enter DB password: ");
-        String password = scanner.next();
 
         //connect to DB
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", username, password);
+        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
 
         //Query
-        Statement stmt = conn.createStatement();
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM fuser WHERE name LIKE ?");
+        pstmt.setString(1,"%Terence%");
 
+        ResultSet rs = pstmt.executeQuery();
 
-        String query = new Scanner(new File("test.sql")).useDelimiter(";").next();
-
-
-        ResultSet rs = stmt.executeQuery(query);
         while (rs.next()) {
-            System.out.println(rs.getString(1));
+            System.out.println(rs.getString(1) + " " + rs.getString(2));
         }
 
-        System.out.println("hihihi");
-        Admin.create_table();
 
+        Sales.menu();
         //close
         rs.close();
-        stmt.close();
+        pstmt.close();
         conn.close();
     }
 }
