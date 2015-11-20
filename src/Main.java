@@ -7,14 +7,16 @@ import java.util.Scanner;
  */
 public class Main {
 
+    static Connection conn;
+
     public static void main(String args[]) throws Exception {
 
         //connect to DB
         Class.forName("oracle.jdbc.driver.OracleDriver");
-        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
+        conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
 
         //Query
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM fuser WHERE name LIKE ?");
+        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM fuser ORDER BY userid");
         pstmt.setString(1,"%Terence%");
 
         ResultSet rs = pstmt.executeQuery();
