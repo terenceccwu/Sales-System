@@ -50,8 +50,8 @@ public class Manager {
             } else if (choice == 2) {
                 System.out.println("| Manufacturer ID | Manufacturer Name | Total Sales Value |");
                 ResultSet rs = stmt.executeQuery("SELECT  M.mID, M.mName,SUM(P.pPrice) AS Totalsalesvalue "
-                        + "FROM  manufacturer M, part P "
-                        + "WHERE M.mID=P.mID "
+                        + "FROM  manufacturer M, part P, transaction T "
+                        + "WHERE M.mID=P.mID P.pID=T.pID "
                         + "GROUP BY M.mID, M.mName "
                         + "ORDER BY Totalsalesvalue DESC");
                 while (rs.next()) {
