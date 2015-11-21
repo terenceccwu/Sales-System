@@ -30,7 +30,8 @@ public class Administrator {
                 "pPrice NUMBER(5)," +
                 "mID NUMBER(2) REFERENCES manufacturer(mID)," +
                 "cID NUMBER(1) REFERENCES category(cID)," +
-                "pAvailableQuantity NUMBER(2))");
+                "pAvailableQuantity NUMBER(2)" +
+                "CONSTRAINT out_of_stock CHECK (pAvailableQuantity >= 0))");
 
         stmt.executeUpdate("CREATE TABLE salesperson(" +
                 "sID NUMBER(2) PRIMARY KEY," +
@@ -78,20 +79,20 @@ public class Administrator {
                     "5. Return to the main menu\n" +
                     "Enter your Choice: ");
 
-            String choice = scanner.next();
+            int choice = scanner.nextInt();
 
             switch (choice) {
-                case "1":
+                case 1:
                     create_table();
                     break;
-                case "2":
+                case 2:
                     delete_table();
                     break;
-                case "3":
+                case 3:
                     break;
-                case "4":
+                case 4:
                     break;
-                case "5":
+                case 5:
                     i = false;
                     break;
                 default:

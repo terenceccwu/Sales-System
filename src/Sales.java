@@ -24,13 +24,13 @@ public class Sales {
                 "2. Manufacturer Name \n" +
                 "Enter Your Choice: ");
 
-            String choice = scanner.next();
+            int choice = scanner.nextInt();
             switch (choice) {
-                case "1":
+                case 1:
                     search_by = 1;
                     i = false;
                     break;
-                case "2":
+                case 2:
                     search_by = 2;
                     i = false;
                     break;
@@ -52,13 +52,13 @@ public class Sales {
                 "2. By price, descending order\n" +
                 "Enter Your Choice: ");
 
-            String choice = scanner.next();
+            int choice = scanner.nextInt();
             switch (choice) {
-                case "1":
+                case 1:
                     order_by = 1;
                     i = false;
                     break;
-                case "2":
+                case 2:
                     order_by = 2;
                     i = false;
                     break;
@@ -142,15 +142,15 @@ public class Sales {
                 "3. Return to the main menu\n" +
                 "Enter Your Choice: ");
 
-            String choice = scanner.next();
+            int choice = scanner.nextInt();
             switch (choice) {
-                case "1":
+                case 1:
                     search_part();
                     break;
-                case "2":
+                case 2:
                     sell_part();
                     break;
-                case "3":
+                case 3:
                     i = false;
                     break;
                 default:
