@@ -49,9 +49,7 @@ public class Administrator {
     }
 
     public  static void delete_table() throws Exception {
-
-        Connection conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
-        Statement stmt = conn.createStatement();
+        Statement stmt = Main.conn.createStatement();
 
         stmt.executeUpdate("DROP TABLE transaction");
         stmt.executeUpdate("DROP TABLE part");
