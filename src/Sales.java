@@ -1,5 +1,6 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 /**
@@ -81,26 +82,50 @@ public class Sales {
             order = order.concat("DESC");
 
         PreparedStatement pstmt = Main.conn.prepareStatement(
-            "SELECT p.pid, p.pname, m.mname, c.cname, p.pAvailableQuantity, m.mWarrantyPeriod, p.pprice" +
-            "FROM part p, manufacturer m, category c" +
-            "WHERE p.mid=m.mid AND p.cid=c.cid AND ("+search_field+" LIKE ?)" +
-            "ORDER BY p.pprice"+ order);
+            "SELECT p.pid, p.pname, m.mname, c.cname, p.pAvailableQuantity, m.mWarrantyperiod, p.pprice " +
+            "FROM part p, manufacturer m, category c " +
+            "WHERE p.mid = m.mid AND p.cid = c.cid AND "+search_field+" LIKE ? " +
+            "ORDER BY p.pprice "+order);
 
         keyword = "%" + keyword + "%";
         pstmt.setString(1,keyword);
 
         //PRINT QUERY
         ResultSet rs = pstmt.executeQuery();
-        System.out.println("| ID | Name | Manufacturer | Category | Quantity | Warranty | Price |");
+        System.out.printf("| %-3s | %-20s | %-20s | %-20s | %-10s | %-10s | %-5s |\n","ID","Name","Manufacturer","Category","Quantity","Warranty","Price");
         while (rs.next()) {
-            System.out.print("| ");
-            for(int j=1; j<=7;j++)
-            {
-               System.out.print(rs.getString(j) + " | ");
-            }
-            System.out.println();
+            System.out.printf("| %3d | %-20s | %-20s | %-20s | %10d | %10d | %5d |\n",
+                    rs.getInt(1),rs.getString(2),
+                    rs.getString(3),rs.getString(4),
+                    rs.getInt(5),rs.getInt(6),rs.getInt(7));
         }
         System.out.println("End of Query");
+    }
+
+    private static void sell_part() throws Exception
+    {
+        PreparedStatement pstmt = Main.conn.prepareStatement(
+            "UPDATE part " +
+            "SET pAvailableQuantity=pAvailableQuantity-1 " +
+            "WHERE pid=?");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter The Part ID: ");
+        int pid = scanner.nextInt();
+
+        pstmt.setInt(1,pid);
+
+        try
+        {
+            if(pstmt.executeUpdate() != 0)
+                System.out.println("update successful!");
+            else
+                System.out.println("Part not found!");
+        } catch (SQLException e)
+        {
+            System.out.println("Out of Stock!");
+        }
+
     }
 
     public static void menu() throws Exception
@@ -123,6 +148,7 @@ public class Sales {
                     search_part();
                     break;
                 case "2":
+                    sell_part();
                     break;
                 case "3":
                     i = false;
