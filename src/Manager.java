@@ -52,7 +52,7 @@ public class Manager {
                 ResultSet rs = stmt.executeQuery("SELECT  M.mID, M.mName,SUM(P.pPrice) AS Totalsalesvalue "
                         + "FROM  manufacturer M, part P "
                         + "WHERE M.mID=P.mID "
-                        + "GROUP BY M.mID "
+                        + "GROUP BY M.mID, M.mName "
                         + "ORDER BY Totalsalesvalue DESC");
                 while (rs.next()) {
                     System.out.println("| " + rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | ");
@@ -62,7 +62,16 @@ public class Manager {
                 System.out.println("Type in the number of parts: ");
                 int noofparts = Integer.parseInt(in.readLine());
                 System.out.println("| Part ID | Part Name | No. of Transaction |");
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+                ResultSet rs = stmt.executeQuery("SELECT P.pID, P.pName, COUNT(*) AS nooftransactions "
+                        + "FROM part P, transaction T "
+                        + "WHERE P.pID=T.pID "
+                        + "GROUP BY P.pID, P.pName "
+                        + "ORDER BY nooftransactions DESC ");
+                int i;
+                for (i = 0; i < noofparts; i++) {
+                    System.out.println("| " + rs.getString(1) + " | " + rs.getString(2) + " | " + rs.getString(3) + " | ");
+                    rs.next();
+                }
                 System.out.println("End of Query");
             }
             System.out.println("-----Operation for manager menu-----");
