@@ -14,12 +14,18 @@ Git diff
 ====
 
 - working directory vs last added/committed changes (unstaged changes)
-	git diff -- \<FILENAME\>
+```
+git diff -- <FILENAME>
+```
 - staged vs a commit
-	git diff --cached \<COMMIT ID\> -- \<FILENAME\> 
-	if \<COMMIT ID\> is empty, the latest checkout-ed commit (HEAD) is used
+```
+git diff --cached <COMMIT ID> -- <FILENAME> 
+if <COMMIT ID> is empty, the latest checkout-ed commit (HEAD) is used
+```
 - old commit vs new commit
-	git diff \<COMMIT ID\> \<COMMIT ID\> -- \<FILENAME\>
+```
+git diff <COMMIT ID> <COMMIT ID> -- <FILENAME>
+```
 
 - if \<FILENAME\> is not provided, all changed files will be shown
 - double dashes -- means end of cmd line flags
