@@ -7,7 +7,7 @@ import java.util.Scanner;
  */
 public class Main {
 
-    static Connection conn;
+    static Connection conn = null;
 
     public static void main(String args[]) throws Exception {
 
@@ -15,23 +15,40 @@ public class Main {
         Class.forName("oracle.jdbc.driver.OracleDriver");
         conn = DriverManager.getConnection("jdbc:oracle:thin:@db12.cse.cuhk.edu.hk:1521:db12", "d103", "123456789");
 
-        Administrator.menu(); //debugging
+        boolean i = true;
+        while (i) {
 
-        //Query
-        PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM fuser ORDER BY userid");
-        pstmt.setString(1,"%Terence%");
+            Scanner scanner = new Scanner(System.in);
 
-        ResultSet rs = pstmt.executeQuery();
+            System.out.print("\n-----Main menu-----\n" +
+                    "What kinds of operation would you like to perform?\n" +
+                    "1. Operation for administrator\n" +
+                    "2. Operation for salesperson\n" +
+                    "3. Operation for manager\n" +
+                    "4. Exit this program\n" +
+                    "Enter your Choice: ");
 
-        while (rs.next()) {
-            System.out.println(rs.getString(1) + " " + rs.getString(2));
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    Administrator.menu();
+                    break;
+                case 2:
+                    Sales.menu();
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    i = false;
+                    break;
+                default:
+                    System.out.print("Command not found\nPress Enter to Continue...");
+                    System.in.read();
+                    break;
+            }
+
         }
-
-
-        Sales.menu();
-        //close
-        rs.close();
-        pstmt.close();
         conn.close();
     }
 }

@@ -1,6 +1,5 @@
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Calendar;
 import java.util.Scanner;
 
 /**
@@ -35,7 +34,8 @@ public class Sales {
                     i = false;
                     break;
                 default:
-                    System.out.println("Command not found");
+                    System.out.print("Command not found\nPress Enter to Continue...");
+                    System.in.read();
                     break;
             }
         }
@@ -63,7 +63,8 @@ public class Sales {
                     i = false;
                     break;
                 default:
-                    System.out.println("Command not found");
+                    System.out.print("Command not found\nPress Enter to Continue...");
+                    System.in.read();
                     break;
             }
         }
@@ -99,34 +100,90 @@ public class Sales {
                     rs.getString(3),rs.getString(4),
                     rs.getInt(5),rs.getInt(6),rs.getInt(7));
         }
-        System.out.println("End of Query");
+        rs.close();
+        pstmt.close();
+
+        System.out.print("End of Query\nPress Enter to Continue...");
+        System.in.read();
     }
 
     private static void sell_part() throws Exception
     {
-        PreparedStatement pstmt = Main.conn.prepareStatement(
-            "UPDATE part " +
-            "SET pAvailableQuantity=pAvailableQuantity-1 " +
-            "WHERE pid=?");
+        int pid;
+        String pname;
+        int quantity;
+        int sid;
+        int tid = 1;
 
         Scanner scanner = new Scanner(System.in);
+
         System.out.print("Enter The Part ID: ");
-        int pid = scanner.nextInt();
+        pid = scanner.nextInt();
 
-        pstmt.setInt(1,pid);
+        PreparedStatement check_quan_stmt = Main.conn.prepareStatement(
+                "SELECT pname, pAvailableQuantity " +
+                "FROM part " +
+                "WHERE pid=?"
+        );
+        check_quan_stmt.setInt(1, pid);
 
-        try
+        ResultSet rs = check_quan_stmt.executeQuery();
+        rs.next();
+        pname = rs.getString(1);
+        quantity = rs.getInt(2);
+
+        check_quan_stmt.close();
+
+        if(quantity <= 0)
         {
-            if(pstmt.executeUpdate() != 0)
-                System.out.println("update successful!");
-            else
-                System.out.println("Part not found!");
-        } catch (SQLException e)
+            System.out.println("Out of Stock!\nPress Enter to Continue...");
+            System.in.read();
+        }
+        else
         {
-            System.out.println("Out of Stock!");
+            System.out.print("Enter The Salesperson ID: ");
+            sid = scanner.nextInt();
+
+            PreparedStatement get_current_tid_stmt = Main.conn.prepareStatement(
+                    "SELECT MAX(tid) FROM transaction"
+            );
+            rs = get_current_tid_stmt.executeQuery();
+            if(rs.next())
+                tid = rs.getInt(1) + 1;
+
+            PreparedStatement insert_trans_stmt = Main.conn.prepareStatement(
+                    "INSERT INTO transaction " +
+                    "VALUES(?,?,?,?)"
+            );
+            Calendar cal = Calendar.getInstance();
+            java.sql.Date date = new Date(cal.getTimeInMillis());
+            insert_trans_stmt.setInt(1,tid);
+            insert_trans_stmt.setInt(2,pid);
+            insert_trans_stmt.setInt(3,sid);
+            insert_trans_stmt.setDate(4,date);
+
+            insert_trans_stmt.executeUpdate();
+
+            PreparedStatement update_quan_stmt= Main.conn.prepareStatement(
+                    "UPDATE part " +
+                    "SET pAvailableQuantity=pAvailableQuantity-1 " +
+                    "WHERE pid=?");
+            update_quan_stmt.setInt(1,pid);
+            update_quan_stmt.executeUpdate();
+
+            System.out.println("Product: "+pname+"(id: "+pid+") Remaining Quantity: "+ (quantity-1));
+
+            get_current_tid_stmt.close();
+            insert_trans_stmt.close();
+            update_quan_stmt.close();
+
+            System.out.print("Press Enter to Continue...");
+            System.in.read();
         }
 
+        rs.close();
     }
+
 
     public static void menu() throws Exception
     {
@@ -154,7 +211,8 @@ public class Sales {
                     i = false;
                     break;
                 default:
-                    System.out.println("Command not found");
+                    System.out.print("Command not found\nPress Enter to Continue...");
+                    System.in.read();
                     break;
             }
         }

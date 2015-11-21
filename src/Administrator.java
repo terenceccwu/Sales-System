@@ -96,7 +96,8 @@ public class Administrator {
                     i = false;
                     break;
                 default:
-                    System.out.println("Command not found");
+                    System.out.print("Command not found\nPress Enter to Continue...");
+                    System.in.read();
                     break;
             }
 
