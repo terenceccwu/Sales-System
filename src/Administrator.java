@@ -12,6 +12,8 @@ public class Administrator {
 
         Statement stmt = Main.conn.createStatement();
 
+        System.out.print("Processing...");
+
         stmt.executeUpdate("CREATE TABLE category(" +
                 "cID NUMBER(1)," +
                 "cName VARCHAR2(20)," +
@@ -45,21 +47,45 @@ public class Administrator {
                 "sID NUMBER(2) REFERENCES salesperson(sID)," +
                 "tDate DATE NOT NULL)");
 
+        System.out.print("Done! Database is initialized!\n");
+
         stmt.close();
 
     }
 
-    public  static void delete_table() throws Exception {
+    public static void delete_table() throws Exception {
         Statement stmt = Main.conn.createStatement();
-
+        System.out.print("Processing...");
         stmt.executeUpdate("DROP TABLE transaction");
         stmt.executeUpdate("DROP TABLE part");
         stmt.executeUpdate("DROP TABLE category");
         stmt.executeUpdate("DROP TABLE manufacturer");
         stmt.executeUpdate("DROP TABLE salesperson");
-
+        System.out.print("Done! Database is removed!\n");
         stmt.close();
 
+    }
+
+    public static void load_data() throws Exception {
+        BufferedReader category_inFile = new BufferedReader(new FileReader(new File("category.txt")));
+        Statement stmt = Main.conn.createStatement();
+
+        PreparedStatement pstmt = Main.conn.prepareStatement("INSERT INTO category VALUES (?,?)");
+
+        String Buf;
+
+        while ((Buf = category_inFile.readLine()) != null){
+            String[] result;
+            result = Buf.split(" ");
+            int cID=Integer.parseInt(result[0]);
+            String cName=result[1];
+            pstmt.setInt(1, cID);
+            pstmt.setString(2, cName);
+            pstmt.executeUpdate();
+        }
+
+        pstmt.close();
+        stmt.close();
     }
 
     public static void menu() throws Exception{
@@ -89,6 +115,7 @@ public class Administrator {
                     delete_table();
                     break;
                 case 3:
+                    load_data();
                     break;
                 case 4:
                     break;
