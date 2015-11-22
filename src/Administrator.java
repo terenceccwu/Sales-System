@@ -67,25 +67,32 @@ public class Administrator {
     }
 
     public static void load_data() throws Exception {
-        BufferedReader category_inFile = new BufferedReader(new FileReader(new File("category.txt")));
-        Statement stmt = Main.conn.createStatement();
+//        BufferedReader category_inFile = new BufferedReader(new FileReader(new File("category.txt")));
+//        Statement stmt = Main.conn.createStatement();
 
         PreparedStatement pstmt = Main.conn.prepareStatement("INSERT INTO category VALUES (?,?)");
+        Scanner cScanner = new Scanner(new File("category_txt"));
 
-        String Buf;
-
-        while ((Buf = category_inFile.readLine()) != null){
-            String[] result;
-            result = Buf.split(" ");
-            int cID=Integer.parseInt(result[0]);
-            String cName=result[1];
-            pstmt.setInt(1, cID);
-            pstmt.setString(2, cName);
+        while (cScanner.hasNext()){
+            pstmt.setInt(1, cScanner.nextInt());
+            pstmt.setString(2, cScanner.next());
             pstmt.executeUpdate();
+            cScanner.nextLine();
         }
 
+//        String Buf;
+//        while ((Buf = category_inFile.readLine()) != null){
+//            String[] result;
+//            result = Buf.split(" ");
+//            int cID=Integer.parseInt(result[0]);
+//            String cName=result[1];
+//            pstmt.setInt(1, cID);
+//            pstmt.setString(2, cName);
+//            pstmt.executeUpdate();
+//        }
+
         pstmt.close();
-        stmt.close();
+//        stmt.close();
     }
 
     public static void menu() throws Exception{
