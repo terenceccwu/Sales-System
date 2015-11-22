@@ -39,7 +39,7 @@ public class Manager {
                 String enddate = in.readLine();
                 System.out.println("Transaction Record:");
                 System.out.println("| ID | Part ID | Part Name | Manufacturer | Price | Date |");
-                ResultSet rs = stmt.executeQuery("SELECT T.tID, P.pID, P.pName, M.mName, P.pPrice, T.tDate\n"
+                ResultSet rs = stmt.executeQuery("SELECT T.tID, P.pID, P.pName, M.mName, P.pPrice, T.tDate "
                         + "FROM transaction T, part P, manufacturer M, salesperson S "
                         + "WHERE T,sID=S.sID AND T.pID=P.pID AND S.sID=" + salesID + " AND T.tdate>=" + startdate + " AND T.tdate<=" + enddate
                         + " ORDER BY t.tDate DESC");
