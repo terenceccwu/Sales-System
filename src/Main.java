@@ -38,6 +38,7 @@ public class Main {
                     Sales.menu();
                     break;
                 case 3:
+                    Manager.menu();
                     break;
                 case 4:
                     i = false;
