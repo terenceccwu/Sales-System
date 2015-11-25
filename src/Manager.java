@@ -22,7 +22,7 @@ public class Manager {
         System.out.println("4. Return to main menu");
         System.out.print("Enter your Choice: ");
         int choice = Integer.parseInt(in.readLine());
-        while (choice != 4) {
+        if (choice == 1 |choice == 2 |choice == 3) {
             if (choice == 1) {
                 System.out.print("Enter The Salesperson ID: ");
                 int salesID = Integer.parseInt(in.readLine());
@@ -66,15 +66,15 @@ public class Manager {
                     rs.next();
                 }
                 System.out.println("End of Query");
+                System.out.print("\n");
             }
-            System.out.println("-----Operation for manager menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. Show the sales record of a salesperson within a period");
-            System.out.println("2. Show the total sales value of each manufacturer");
-            System.out.println("3. Show the N most popular part");
-            System.out.println("4. Return to main menu");
-            System.out.print("Enter your Choice: ");
-            choice = Integer.parseInt(in.readLine());
+        }
+        else if (choice == 4) {
+            System.out.print("\n");
+        }
+        else {
+            System.out.print("Command not found\nPress Enter to Continue...");
+            System.in.read();
         }
     }
 }

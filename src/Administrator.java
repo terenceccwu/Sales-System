@@ -51,9 +51,6 @@ public class Administrator {
 
         stmt.close();
 
-        System.out.println("Press enter to continue...");
-        Scanner end = new Scanner(System.in);
-        end.nextLine();
 
     }
 
@@ -68,9 +65,6 @@ public class Administrator {
         System.out.print("Done! Database is removed!\n");
         stmt.close();
 
-        System.out.println("Press enter to continue...");
-        Scanner end = new Scanner(System.in);
-        end.nextLine();
 
     }
 
@@ -156,9 +150,7 @@ public class Administrator {
 
         System.out.print("Done! Data is inputted to the database!\n");
 
-        System.out.println("Press enter to continue...");
-        Scanner end = new Scanner(System.in);
-        end.nextLine();
+
 
 //        String Buf;
 //        while ((Buf = category_inFile.readLine()) != null){
@@ -200,9 +192,7 @@ public class Administrator {
         rs.next();
         System.out.print("transaction: "+rs.getInt(1)+"\n");
 
-        System.out.println("Press enter to continue...");
-        Scanner end = new Scanner(System.in);
-        end.nextLine();
+        rs.close();
 
     }
 
@@ -228,15 +218,19 @@ public class Administrator {
             switch (choice) {
                 case 1:
                     create_table();
+                    i = false;
                     break;
                 case 2:
                     delete_table();
+                    i = false;
                     break;
                 case 3:
                     load_data();
+                    i = false;
                     break;
                 case 4:
                     count_record();
+                    i = false;
                     break;
                 case 5:
                     i = false;
@@ -244,6 +238,7 @@ public class Administrator {
                 default:
                     System.out.print("Command not found\nPress Enter to Continue...");
                     System.in.read();
+                    i = false;
                     break;
             }
 

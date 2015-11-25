@@ -30,6 +30,8 @@ public class Main {
 
             int choice = scanner.nextInt();
 
+            System.out.print("\n");
+
             switch (choice) {
                 case 1:
                     Administrator.menu();
@@ -46,6 +48,7 @@ public class Main {
                 default:
                     System.out.print("Command not found\nPress Enter to Continue...");
                     System.in.read();
+                    i = false;
                     break;
             }
 

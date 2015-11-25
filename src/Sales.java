@@ -103,8 +103,6 @@ public class Sales {
         rs.close();
         pstmt.close();
 
-        System.out.print("End of Query\nPress Enter to Continue...");
-        System.in.read();
     }
 
     private static void sell_part() throws Exception
@@ -177,8 +175,6 @@ public class Sales {
             insert_trans_stmt.close();
             update_quan_stmt.close();
 
-            System.out.print("Press Enter to Continue...");
-            System.in.read();
         }
 
         rs.close();
@@ -192,7 +188,7 @@ public class Sales {
 
         while(i) {
             System.out.print(
-                "\n----Operation for salesperson menu----\n" +
+                "----Operation for salesperson menu----\n" +
                 "What kinds of operation would you like to perform?\n" +
                 "1. Search for parts\n" +
                 "2. Sell a part\n" +
@@ -203,9 +199,11 @@ public class Sales {
             switch (choice) {
                 case 1:
                     search_part();
+                    i = false;
                     break;
                 case 2:
                     sell_part();
+                    i = false;
                     break;
                 case 3:
                     i = false;
@@ -213,6 +211,7 @@ public class Sales {
                 default:
                     System.out.print("Command not found\nPress Enter to Continue...");
                     System.in.read();
+                    i = false;
                     break;
             }
         }
