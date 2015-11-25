@@ -51,6 +51,10 @@ public class Administrator {
 
         stmt.close();
 
+        System.out.println("Press enter to continue...");
+        Scanner end = new Scanner(System.in);
+        end.nextLine();
+
     }
 
     public static void delete_table() throws Exception {
@@ -64,21 +68,97 @@ public class Administrator {
         System.out.print("Done! Database is removed!\n");
         stmt.close();
 
+        System.out.println("Press enter to continue...");
+        Scanner end = new Scanner(System.in);
+        end.nextLine();
+
     }
 
     public static void load_data() throws Exception {
 //        BufferedReader category_inFile = new BufferedReader(new FileReader(new File("category.txt")));
 //        Statement stmt = Main.conn.createStatement();
 
-        PreparedStatement pstmt = Main.conn.prepareStatement("INSERT INTO category VALUES (?,?)");
-        Scanner cScanner = new Scanner(new File("category_txt"));
+        System.out.print("Type in the Source Data Folder Path: ");
 
-        while (cScanner.hasNext()){
+        Scanner scanner = new Scanner(System.in);
+        String path = scanner.nextLine();
+
+        System.out.print("Processing...");
+
+        Scanner cScanner = new Scanner(new File("./"+path+"/category.txt")).useDelimiter("\t|\n");
+        Scanner mScanner = new Scanner(new File("./"+path+"/manufacturer.txt")).useDelimiter("\t|\n");
+        Scanner pScanner = new Scanner(new File("./"+path+"/part.txt")).useDelimiter("\t|\n");
+        Scanner sScanner = new Scanner(new File("./"+path+"/salesperson.txt")).useDelimiter("\t|\n");
+        Scanner tScanner = new Scanner(new File("./"+path+"/transaction.txt")).useDelimiter("\t|\n");
+
+        PreparedStatement pstmt = Main.conn.prepareStatement("INSERT INTO category VALUES (?,?)");
+
+        while (cScanner.hasNextLine()){
             pstmt.setInt(1, cScanner.nextInt());
             pstmt.setString(2, cScanner.next());
             pstmt.executeUpdate();
-            cScanner.nextLine();
+            if (cScanner.hasNextLine())
+                cScanner.nextLine();
         }
+
+        pstmt = Main.conn.prepareStatement("INSERT INTO manufacturer VALUES (?,?,?,?,?)");
+
+        while (mScanner.hasNextLine()){
+            pstmt.setInt(1, mScanner.nextInt());
+            pstmt.setString(2, mScanner.next());
+            pstmt.setString(3, mScanner.next());
+            pstmt.setInt(4, mScanner.nextInt());
+            pstmt.setInt(5, mScanner.nextInt());
+            pstmt.executeUpdate();
+            if (mScanner.hasNextLine())
+                mScanner.nextLine();
+        }
+
+        pstmt = Main.conn.prepareStatement("INSERT INTO part VALUES (?,?,?,?,?,?)");
+
+        while (pScanner.hasNextLine()){
+            pstmt.setInt(1, pScanner.nextInt());
+            pstmt.setString(2, pScanner.next());
+            pstmt.setInt(3, pScanner.nextInt());
+            pstmt.setInt(4, pScanner.nextInt());
+            pstmt.setInt(5, pScanner.nextInt());
+            pstmt.setInt(6, pScanner.nextInt());
+            pstmt.executeUpdate();
+            if (pScanner.hasNextLine())
+                pScanner.nextLine();
+        }
+
+        pstmt = Main.conn.prepareStatement("INSERT INTO salesperson VALUES (?,?,?,?)");
+
+        while (sScanner.hasNextLine()){
+            pstmt.setInt(1, sScanner.nextInt());
+            pstmt.setString(2, sScanner.next());
+            pstmt.setString(3, sScanner.next());
+            pstmt.setInt(4, sScanner.nextInt());
+            pstmt.executeUpdate();
+            if (sScanner.hasNextLine())
+                sScanner.nextLine();
+        }
+
+        pstmt = Main.conn.prepareStatement("INSERT INTO transaction VALUES (?,?,?,(TO_DATE(?, 'DD/MM/YYYY')))");
+
+        while (tScanner.hasNextLine()){
+            pstmt.setInt(1, tScanner.nextInt());
+            pstmt.setInt(2, tScanner.nextInt());
+            pstmt.setInt(3, tScanner.nextInt());
+            pstmt.setString(4, tScanner.next());
+            pstmt.executeUpdate();
+            if (tScanner.hasNextLine())
+                tScanner.nextLine();
+        }
+
+        pstmt.close();
+
+        System.out.print("Done! Data is inputted to the database!\n");
+
+        System.out.println("Press enter to continue...");
+        Scanner end = new Scanner(System.in);
+        end.nextLine();
 
 //        String Buf;
 //        while ((Buf = category_inFile.readLine()) != null){
@@ -90,9 +170,40 @@ public class Administrator {
 //            pstmt.setString(2, cName);
 //            pstmt.executeUpdate();
 //        }
-
-        pstmt.close();
 //        stmt.close();
+    }
+
+    public static void count_record() throws Exception{
+        int count=0;
+
+        System.out.print("Number of records in each table:\n");
+
+        Statement stmt = Main.conn.createStatement();
+
+        ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM category");
+        rs.next();
+        System.out.println("category: "+rs.getInt(1));
+
+        rs = stmt.executeQuery("SELECT COUNT(*) FROM manufacturer");
+        rs.next();
+        System.out.print("manufacturer: "+rs.getInt(1)+"\n");
+
+        rs = stmt.executeQuery("SELECT COUNT(*) FROM part");
+        rs.next();
+        System.out.print("part: "+rs.getInt(1)+"\n");
+
+        rs = stmt.executeQuery("SELECT COUNT(*) FROM salesperson");
+        rs.next();
+        System.out.print("salesperson: "+rs.getInt(1)+"\n");
+
+        rs = stmt.executeQuery("SELECT COUNT(*) FROM transaction");
+        rs.next();
+        System.out.print("transaction: "+rs.getInt(1)+"\n");
+
+        System.out.println("Press enter to continue...");
+        Scanner end = new Scanner(System.in);
+        end.nextLine();
+
     }
 
     public static void menu() throws Exception{
@@ -125,6 +236,7 @@ public class Administrator {
                     load_data();
                     break;
                 case 4:
+                    count_record();
                     break;
                 case 5:
                     i = false;
