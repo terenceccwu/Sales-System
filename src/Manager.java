@@ -23,22 +23,22 @@ public class Manager {
             if (choice == 1) {
                 System.out.print("Enter The Salesperson ID: ");
                 String salesID = in.readLine();
-                System.out.println("Type in the starting date [dd/mm/yyyy]: ");
+                System.out.print("Type in the starting date [dd/mm/yyyy]: ");
                 String startdate = in.readLine();
-                System.out.println("Type in the ending date [dd/mm/yyyy]: ");
+                System.out.print("Type in the ending date [dd/mm/yyyy]: ");
                 String enddate = in.readLine();
                 System.out.println("Transaction Record:");
                 System.out.println("| ID | Part ID | Part Name | Manufacturer | Price | Date |");
-                PreparedStatement pstmt = Main.conn.prepareStatement("SELECT T.tID, P.pID, P.pName, M.mName, P.pPrice, T.tDate "
-                        + "FROM transaction T, part P, manufacturer M, salesperson S "
-                        + "WHERE T,sID = S.sID AND T.pID = P.pID AND S.sID = ? AND T.tdate >= ? AND T.tdate <= ?"
-                        + " ORDER BY t.tDate DESC");
+                PreparedStatement pstmt = Main.conn.prepareStatement("SELECT T.tID, P.pID, P.pName, M.mName, P.pPrice, T.tDate " +
+                                        "FROM transaction T, part P, manufacturer M, salesperson S " +
+                                        "WHERE T.sID = S.sID AND T.pID = P.pID AND M.mID = P.mID AND S.sID = ? AND T.tDate >= (TO_DATE(?, 'DD/MM/YYYY')) AND T.tDate <= (TO_DATE(?, 'DD/MM/YYYY')) " +
+                                        "ORDER BY t.tDate DESC");
                 pstmt.setString(1, salesID);
                 pstmt.setString(2, startdate);
                 pstmt.setString(3, enddate);
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
-                    System.out.println("| " + rs.getInt(1) + " | " + rs.getInt(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getInt(5) + " | " + rs.getString(6) + " | ");
+                    System.out.println("| " + rs.getInt(1) + " | " + rs.getInt(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getInt(5) + " | " + rs.getString(6).substring(0,9) + " | ");
                 }
                 System.out.println("End of Query");
                 rs.close();
