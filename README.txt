@@ -14,5 +14,8 @@ Tam Da Sun Handason 1155049830
 ./src/Salesperson.java - The menu for Salesperson
 ./ojdbc6.jar - given API
 ./sample_data - All sample data in .txt
+./out/ - All compiled .class file will be saved here
 
 -Methods of compilation and execution:
+javac -d ./out ./src/*.java
+java -cp ./ojdbc6.jar:./out Main
