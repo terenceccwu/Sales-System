@@ -134,7 +134,7 @@ public class Sales {
 
         if(quantity <= 0)
         {
-            System.out.println("Out of Stock!\nPress Enter to Continue...");
+            System.out.println("Out of Stock!");
             System.in.read();
         }
         else

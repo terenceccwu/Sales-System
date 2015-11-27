@@ -38,7 +38,7 @@ public class Manager {
                 pstmt.setString(3, enddate);
                 ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
-                    System.out.println("| " + rs.getInt(1) + " | " + rs.getInt(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getInt(5) + " | " + rs.getString(6).substring(0,9) + " | ");
+                    System.out.println("| " + rs.getInt(1) + " | " + rs.getInt(2) + " | " + rs.getString(3) + " | " + rs.getString(4) + " | " + rs.getInt(5) + " | " + rs.getString(6).substring(0,10) + " | ");
                 }
                 System.out.println("End of Query");
                 rs.close();
@@ -68,11 +68,10 @@ public class Manager {
                         + "ORDER BY nooftransactions DESC ");
                 ResultSet rs = pstmt.executeQuery();
 
-                for (int i = 0; i < noofparts; i++) {
-                    rs.next();
+                for (int i = 0; i < noofparts && rs.next(); i++) {
                     System.out.println("| " + rs.getInt(1) + " | " + rs.getString(2) + " | " + rs.getInt(3) + " | ");
-
                 }
+
                 System.out.println("End of Query");
                 System.out.print("\n");
                 rs.close();

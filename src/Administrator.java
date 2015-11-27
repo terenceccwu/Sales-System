@@ -150,19 +150,6 @@ public class Administrator {
 
         System.out.print("Done! Data is inputted to the database!\n");
 
-
-
-//        String Buf;
-//        while ((Buf = category_inFile.readLine()) != null){
-//            String[] result;
-//            result = Buf.split(" ");
-//            int cID=Integer.parseInt(result[0]);
-//            String cName=result[1];
-//            pstmt.setInt(1, cID);
-//            pstmt.setString(2, cName);
-//            pstmt.executeUpdate();
-//        }
-//        stmt.close();
     }
 
     public static void count_record() throws Exception{
